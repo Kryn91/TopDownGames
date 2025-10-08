@@ -11,7 +11,7 @@ int main(void)
 	float worldWidth = 3000.f;
 	float worldHeight = 2000.f;
 //player
-	player player;							
+	Player player;							
 	player.setPosition({960.f,540.f});
 	
 	std::vector<sf::RectangleShape> walls;
