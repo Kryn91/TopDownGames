@@ -45,7 +45,7 @@ int main(void)
 	float dt = clock.restart().asSeconds();
 
 //player udapte
-	player.updatePosition(dt, walls);
+	player.update(dt, walls);
 
 //camera update
 	sf::Vector2f viewSize = camera.getSize();
@@ -61,7 +61,6 @@ int main(void)
 	if (center.y > worldHeight - halfSize.y)
 	       	center.y = worldHeight - halfSize.y;
 
-	//limite de camera a implementer
 	camera.setCenter(player.getPosition());
 	window.setView(camera);
 	

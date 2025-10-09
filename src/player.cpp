@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include <cmath>
+#include <iostream>
 
 Player::Player()
 {
@@ -23,7 +24,7 @@ sf::FloatRect Player::getBounds() const
     return body.getGlobalBounds();
 }
 
-void Player::updatePosition(float dt, const std::vector<sf::RectangleShape>& walls)
+void Player::update(float dt, const std::vector<sf::RectangleShape>& walls)
 {
     sf::Vector2f dir{0.f, 0.f};
 
@@ -37,11 +38,11 @@ void Player::updatePosition(float dt, const std::vector<sf::RectangleShape>& wal
 	    dir.x += 1;
 
     float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-    if (len > 0) dir /= len;
-
+    if (len > 0) 
+	    dir /= len;
     sf::Vector2f movement = dir * speed * dt;
 
-    // Déplacement sur X
+    // Déplacement et colisions
     body.move({movement.x, 0.f});
     for (const auto& wall : walls)
     {
@@ -51,8 +52,6 @@ void Player::updatePosition(float dt, const std::vector<sf::RectangleShape>& wal
             break;
         }
     }
-
-    // Déplacement sur Y
     body.move({0.f, movement.y});
     for (const auto& wall : walls)
     {
@@ -62,9 +61,40 @@ void Player::updatePosition(float dt, const std::vector<sf::RectangleShape>& wal
             break;
         }
     }
+    //attaque------------------------------------------------------------------
+    //Timers
+    attackTimer -= dt;
+    if (attackActiveTimer > 0.f)
+	    attackActiveTimer -= dt;
+
+    //mélée
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && attackTimer <= 0.f)
+    {
+	attackTimer = attackCooldown;
+	attackActiveTimer = attackDuration;
+	std::cout << "coup de mélée declancher !\n";
+    }
+}
+
+std::optional<sf::Rect<float>> Player::getMeleeHitbox() const
+{
+	if (attackActiveTimer <= 0)
+		return(std::nullopt);
+	sf::Vector2f c = body.getPosition();
+	sf::Vector2f size(meleeRange, body.getSize().y * 0.9f);
+	sf::Rect<float> rect(sf::Vector2f(c.x + 30.f, c.y - size.y / 2.f),size);
+	return(rect);
 }
 
 void Player::draw(sf::RenderTarget& target) const
 {
     target.draw(body);
+    if (auto hitbox = getMeleeHitbox())
+	   {
+		   sf::RectangleShape hitRect;
+		   hitRect.setPosition(hitbox->position);
+		   hitRect.setSize(hitbox->size);
+		   hitRect.setFillColor(sf::Color(255, 0, 0, 120));
+		   target.draw(hitRect);
+	   }
 }
