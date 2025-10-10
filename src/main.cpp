@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "player.hpp"
+#include "enemy.hpp"
 #include <cmath>
 #include <vector>
 
@@ -14,8 +15,12 @@ int main(void)
 	Player player;							
 	player.setPosition({960.f,540.f});
 	
-	std::vector<sf::RectangleShape> walls;
+//enemy
+	Enemy enemy;
+	enemy.setPosition({1000,800});
 //wall
+
+	std::vector<sf::RectangleShape> walls;
 	sf::RectangleShape wall1({400.f, 40.f});
 	wall1.setPosition({760.f, 1000.f});
 	wall1.setFillColor(sf::Color::Blue);
@@ -68,6 +73,7 @@ int main(void)
 	window.clear(sf::Color::Black);
 	for (auto&wall : walls) window.draw(wall);
 	player.draw(window);
+	enemy.draw(window);
 	window.display();
 	}
 	return(0);
