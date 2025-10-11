@@ -19,6 +19,11 @@ sf::Vector2f Player::getPosition() const
     return body.getPosition();
 }
 
+void Player::setRotation(float angle)
+{
+	body.setRotation(sf::degrees(angle));
+}
+
 sf::FloatRect Player::getBounds() const
 {
     return body.getGlobalBounds();

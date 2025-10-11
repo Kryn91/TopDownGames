@@ -19,6 +19,7 @@ public:
 
     void setPosition(const sf::Vector2f& pos);
     sf::Vector2f getPosition() const;
+    void setRotation(float angle);
     sf::FloatRect getBounds() const;
     bool getHasHitEnemy()const;
     void setHasHitEnemy(bool value);
