@@ -49,21 +49,10 @@ int main(void)
 		}
 	float dt = clock.restart().asSeconds();
 //gestion de la souris
-	sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
-	sf::Vector2f mouseWorld = window.mapPixelToCoords(mousePixel);
-	sf::Vector2f playerPos = player.getPosition();
-	sf::Vector2f dir = mouseWorld - playerPos;
-	
-	float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-	if (len > 0.001f)
-		dir /=len;
-	float angleDeg = std::atan2(dir.y, dir.x) * 180.f / 3.14159f;
-	player.setRotation(angleDeg);
+	player.handleInput(window);	
 //player udapte
 	player.update(dt, walls);
-
-
-//melee update
+//melee Colision
 
 	auto meleeHitbox = player.getMeleeHitbox();
 	if (meleeHitbox.has_value() && enemy.isAlive())
