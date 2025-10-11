@@ -12,6 +12,7 @@ private:
     float attackTimer = 0.f;
     float attackActiveTimer = 0.f;
     float meleeRange = 70.f;
+    bool hasHitEnemy = false;
 
 public:
     Player();
@@ -19,7 +20,8 @@ public:
     void setPosition(const sf::Vector2f& pos);
     sf::Vector2f getPosition() const;
     sf::FloatRect getBounds() const;
-
+    bool getHasHitEnemy()const;
+    void setHasHitEnemy(bool value);
     void update(float dt, const std::vector<sf::RectangleShape>& walls);
     void draw(sf::RenderTarget& target) const;
     std::optional<sf::Rect<float>> getMeleeHitbox() const;

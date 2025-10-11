@@ -24,6 +24,16 @@ sf::FloatRect Player::getBounds() const
     return body.getGlobalBounds();
 }
 
+bool Player::getHasHitEnemy() const
+{
+	return(hasHitEnemy);
+}
+
+void Player::setHasHitEnemy(bool value)
+{
+	hasHitEnemy = value;
+}
+
 void Player::update(float dt, const std::vector<sf::RectangleShape>& walls)
 {
     sf::Vector2f dir{0.f, 0.f};
@@ -72,6 +82,7 @@ void Player::update(float dt, const std::vector<sf::RectangleShape>& walls)
     {
 	attackTimer = attackCooldown;
 	attackActiveTimer = attackDuration;
+	hasHitEnemy = false;
 	std::cout << "coup de mélée declancher !\n";
     }
 }

@@ -52,6 +52,26 @@ int main(void)
 //player udapte
 	player.update(dt, walls);
 
+//melee update
+
+	auto meleeHitbox = player.getMeleeHitbox();
+	if (meleeHitbox.has_value() && enemy.isAlive())
+	{
+		sf::FloatRect hitbox = meleeHitbox.value();
+		sf::FloatRect enemyBox = enemy.getBounds();
+
+		bool isColliding =
+			hitbox.position.x < enemyBox.position.x + enemyBox.size.x &&
+			hitbox.position.x + hitbox.size.x > enemyBox.position.x &&
+			hitbox.position.y < enemyBox.position.y + enemyBox.position.y &&
+			hitbox.position.y + hitbox.size.y > enemyBox.position.y;
+		if (isColliding && !player.getHasHitEnemy())
+		{
+			enemy.takeDamage(20);
+			player.setHasHitEnemy(true);
+		}
+	}
+
 //camera update
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2f halfSize = viewSize / 2.f;

@@ -10,6 +10,8 @@ public:
 	Enemy();
 
 	void setPosition(const sf::Vector2f pos);
+	sf::FloatRect getBounds()const;
 	void draw(sf::RenderTarget& target)const;
 	void takeDamage(int amount);
+	bool isAlive()const;
 };
