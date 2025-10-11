@@ -19,9 +19,9 @@ sf::Vector2f Player::getPosition() const
 	return body.getPosition();
 }
 
-void Player::setRotation(float angleDegrees)
+void Player::setRotation(float angle)
 {
-	body.setRotation(sf::degrees(angleDegrees));
+	body.setRotation(sf::degrees(angle));
 }
 
 sf::FloatRect Player::getBounds() const
@@ -49,8 +49,13 @@ void Player::handleInput(const sf::RenderWindow& window)
 		attack(mouseWorld);
     }
 	sf::Vector2f dir = mouseWorld - body.getPosition();
-	float angle = std::atan2(dir.y, dir.x);
+	if (dir.x != 0.f || dir.y != 0.f)
+	{
+		float angle = std::atan2(dir.y, dir.x) * 180.f / 3.14159265f;
+		setRotation(angle);
+	}
 }
+
 void Player::update(float dt, const std::vector<sf::RectangleShape>& walls)
 {
 	sf::Vector2f dir{0.f, 0.f};
