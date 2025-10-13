@@ -41,19 +41,24 @@ void Player::setHasHitEnemy(bool value)
 void Player::handleInput(const sf::RenderWindow& window)
 {
 	sf::Vector2f mouseWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+	sf::Vector2f dir = mouseWorld - body.getPosition();
+	float length = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+	if (length != 0.f)
+		dir /= length;
+	if (dir.x != 0.f || dir.y != 0.f)
+	{
+		float angle = std::atan2(dir.y, dir.x) * 180.f / 3.14159265f;
+		setRotation(angle);
+	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && attackTimer <= 0.f)
 	{
 		attackTimer = attackCooldown;
 		attackActiveTimer = attackDuration;
 		hasHitEnemy = false;
 		attack(mouseWorld);
-    }
-	sf::Vector2f dir = mouseWorld - body.getPosition();
-	if (dir.x != 0.f || dir.y != 0.f)
-	{
-		float angle = std::atan2(dir.y, dir.x) * 180.f / 3.14159265f;
-		setRotation(angle);
-	}
+    	}
+
 }
 
 void Player::update(float dt, const std::vector<sf::RectangleShape>& walls)
@@ -104,9 +109,15 @@ std::optional<sf::Rect<float>> Player::getMeleeHitbox() const
 {
 	if (attackActiveTimer <= 0)
 		return(std::nullopt);
-	float range = meleeRange;
-	sf::Vector2f size(range, body.getSize().y * 0.9f);
-	sf::Vector2f pos = body.getPosition() + attackDir * (range * 0.5f);
+	sf::Vector2f playerPos = body.getPosition();
+	sf::Vector2f bodySize = body.getSize();
+
+	sf::Vector2f size(meleeRange, bodySize.y * 0.9f);
+	sf::Vector2f pos = playerPos;
+	pos += attackDir * (meleeRange * 0.5f);
+	
+	pos.x -= size.x * 0.5f;
+	pos.y -= size.y * 0.5f;
 	return(sf::Rect<float>(pos, size));
 }
 
