@@ -56,6 +56,7 @@ void Player::handleInput(const sf::RenderWindow& window)
 		attackTimer = attackCooldown;
 		attackActiveTimer = attackDuration;
 		hasHitEnemy = false;
+		attackActiveTimer = 0.2f;
 		attack(mouseWorld);
     	}
 
@@ -124,11 +125,20 @@ std::optional<sf::Rect<float>> Player::getMeleeHitbox() const
 void Player::draw(sf::RenderTarget& target) const
 {
 	target.draw(body);
-    	if (auto hitbox = getMeleeHitbox())
+    	if (attackActiveTimer > 0.f)
 	{
-		sf::RectangleShape hitRect;
-		hitRect.setPosition(hitbox->position);
-		hitRect.setSize(hitbox->size);
+		sf::Vector2f size(meleeRange, body.getSize().y * 0.9f);
+		sf::Vector2f pos = body.getPosition();
+
+		sf::Vector2f hitBoxCenter = pos + attackDir * (meleeRange * 0.5f);
+
+		sf::RectangleShape hitRect(size);
+		hitRect.setOrigin(sf::Vector2f ({size.x * 0.5f, size.y * 0.5f}));
+		hitRect.setPosition(hitBoxCenter);
+
+		float angle = std::atan2(attackDir.y, attackDir.x) * 180.f / 3.14159265f;
+		hitRect.setRotation(sf::degrees(angle));
+
 		hitRect.setFillColor(sf::Color(255, 0, 0, 120));
 		target.draw(hitRect);
 	}
