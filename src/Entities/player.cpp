@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-Player::Player()
+Player::Player(): health(100)
 {
 	body.setSize({50.f, 50.f});
 	body.setOrigin({25.f, 25.f});
@@ -22,6 +22,11 @@ sf::Vector2f Player::getPosition() const
 void Player::setRotation(float angle)
 {
 	body.setRotation(sf::degrees(angle));
+}
+
+bool	Player::isAlive()const
+{
+	return(health.isAlive());
 }
 
 sf::FloatRect Player::getBounds() const
