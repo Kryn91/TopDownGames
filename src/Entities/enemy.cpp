@@ -1,12 +1,11 @@
 #include "Entities/enemy.hpp"
 #include <iostream>
 
-Enemy::Enemy()
+Enemy::Enemy() : health(100)
 {
 	body.setSize({50.f,50.f});
 	body.setOrigin({25.f, 25.f});
 	body.setFillColor(sf::Color::Red);
-	hp = 100;
 }
 
 void Enemy::draw(sf::RenderTarget& target)const
@@ -24,12 +23,10 @@ sf::FloatRect Enemy::getBounds()const
 }
 void Enemy::takeDamage(int amount)
 {
-	hp -= amount;
-       if (hp <  0)
-	       hp = 0;
-       std::cout << "L'enemmi a subi " << amount << "degats ! HP restant : " << hp << std::endl;
+	health.takeDamage(amount);
+       std::cout << "L'enemmi a subi " << amount << "degats ! HP restant : "<< health.getHealth() << std::endl;
 }
 bool Enemy::isAlive()const
 {
-	return hp > 0;
+	return(health.isAlive());
 }

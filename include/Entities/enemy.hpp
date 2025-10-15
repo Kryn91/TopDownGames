@@ -1,11 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Components/healthComponent.hpp"
 
 class Enemy
 {
 private:
 	sf::RectangleShape body;
-	int hp;
+	//int hp;
+	HealthComponent health;
 public:
 	Enemy();
 
