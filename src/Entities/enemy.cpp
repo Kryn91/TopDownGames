@@ -1,4 +1,4 @@
-#include "enemy.hpp"
+#include "Entities/enemy.hpp"
 #include <iostream>
 
 Enemy::Enemy()

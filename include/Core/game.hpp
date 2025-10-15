@@ -1,9 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "player.hpp"
-#include "enemy.hpp"
-//#include <cmath>
-//#include <vector>
+#include "Entities/player.hpp"
+#include "Entities/enemy.hpp"
 
 class	Game
 {

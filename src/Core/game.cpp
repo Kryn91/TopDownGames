@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "Core/game.hpp"
 
 float worldWidth = 3000.f;
 float worldHeight = 2000.f;
