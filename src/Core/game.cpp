@@ -1,4 +1,5 @@
 #include "Core/game.hpp"
+#include <algorithm>
 
 float worldWidth = 3000.f;
 float worldHeight = 2000.f;
@@ -10,7 +11,6 @@ Game::Game()
 		window.setFramerateLimit(60);
 
 		player.setPosition({960.f,540.f});
-		enemy.setPosition({1000,800});
 
 		sf::RectangleShape wall1({400.f, 40.f});
 		wall1.setPosition({760.f, 1000.f});
@@ -34,6 +34,8 @@ void	Game::run(void)
 		float dt = clock.restart().asSeconds();
 		player.handleInput(window);	
 		player.update(dt, walls);
+		spawnEnemy(1000, 600);
+		spawnEnemy(200, 600);
 		handleEvent();
 		update(dt);
 		render();
@@ -54,21 +56,29 @@ void	Game::update(float dt)
 {
 //melee Colision
 	auto meleeHitbox = player.getMeleeHitbox();
-	if (meleeHitbox.has_value() && enemy.isAlive())
+	if (meleeHitbox.has_value())
 	{
-		sf::FloatRect hitbox = meleeHitbox.value();
-		sf::FloatRect enemyBox = enemy.getBounds();
-		bool isColliding =
-		hitbox.position.x < enemyBox.position.x + enemyBox.size.x &&
-		hitbox.position.x + hitbox.size.x > enemyBox.position.x &&
-		hitbox.position.y < enemyBox.position.y + enemyBox.position.y &&
-		hitbox.position.y + hitbox.size.y > enemyBox.position.y;
-		if (isColliding && !player.getHasHitEnemy())
+		for (Enemy & e: enemies)
 		{
-			enemy.takeDamage(20);
-			player.setHasHitEnemy(true);
+			sf::FloatRect hitbox = meleeHitbox.value();
+			sf::FloatRect enemyBox = e.getBounds();
+			bool isColliding =
+			hitbox.position.x < enemyBox.position.x + enemyBox.size.x &&
+			hitbox.position.x + hitbox.size.x > enemyBox.position.x &&
+			hitbox.position.y < enemyBox.position.y + enemyBox.position.y &&
+			hitbox.position.y + hitbox.size.y > enemyBox.position.y;
+			if (e.isAlive() && isColliding && !player.getHasHitEnemy())
+			{
+				e.takeDamage(20);
+				player.setHasHitEnemy(true);
+			}
 		}
 	}
+	enemies.erase(
+		std::remove_if(enemies.begin(), enemies.end(),
+			[](const Enemy& e) { return e.readyToRemove(); }),
+		enemies.end()
+		);
 //camera update
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2f halfSize = viewSize / 2.f;
@@ -86,13 +96,23 @@ void	Game::update(float dt)
 	window.setView(camera);
 }
 
+void	Game::spawnEnemy(float x, float y)
+{
+	Enemy newEnemy;
+	newEnemy.setPosition({x, y});
+	enemies.push_back(newEnemy);
+}
+
 void	Game::render(void)
 {
 	window.clear(sf::Color::Black);
 	for (auto&wall : walls) window.draw(wall);
 	{
 	player.draw(window);
-	enemy.draw(window);
+	for (Enemy & e: enemies)
+	{
+		e.draw(window);
+	}
 	window.display();
 	}
 }

@@ -3,9 +3,9 @@
 	HealthComponent::HealthComponent(int initialHealth)
 	: health(initialHealth), alive(true) {}
 
-void HealthComponent::takeDamage(int amount)
+void HealthComponent::takeDamage(int damage)
 {
-	health -= amount;
+	health -= damage;
 	if (health <= 0)
 	{
 		health = 0;

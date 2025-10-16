@@ -16,4 +16,5 @@ public:
 	void draw(sf::RenderTarget& target)const;
 	void takeDamage(int amount);
 	bool isAlive()const;
+	bool readyToRemove()const;
 };

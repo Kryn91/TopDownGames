@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Entities/player.hpp"
 #include "Entities/enemy.hpp"
+#include <vector>
+
 
 class	Game
 {
@@ -14,10 +16,11 @@ private:
 	sf::View camera;
 
 	Player player;
-	Enemy enemy;
+	std::vector<Enemy> enemies;
 	std::vector<sf::RectangleShape> walls;
 
 	void	handleEvent(void);
+	void 	spawnEnemy(float x, float y);
 	void	update(float dt);
 	void	render(void);
 };

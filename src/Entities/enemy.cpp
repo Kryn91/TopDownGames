@@ -8,25 +8,33 @@ Enemy::Enemy() : health(100)
 	body.setFillColor(sf::Color::Red);
 }
 
-void Enemy::draw(sf::RenderTarget& target)const
+void	Enemy::draw(sf::RenderTarget& target)const
 {
 	target.draw(body);
 }
 
-void Enemy::setPosition(sf::Vector2f pos)
+void	Enemy::setPosition(sf::Vector2f pos)
 {
 	body.setPosition(pos);
 }
-sf::FloatRect Enemy::getBounds()const
+
+sf::FloatRect	Enemy::getBounds()const
 {
-	return body.getGlobalBounds();
+	return (body.getGlobalBounds());
 }
-void Enemy::takeDamage(int amount)
+
+void	Enemy::takeDamage(int amount)
 {
 	health.takeDamage(amount);
        std::cout << "L'enemmi a subi " << amount << "degats ! HP restant : "<< health.getHealth() << std::endl;
 }
-bool Enemy::isAlive()const
+
+bool	Enemy::isAlive()const
 {
 	return(health.isAlive());
+}
+
+bool	Enemy::readyToRemove()const
+{
+	return(health.getHealth() <= 0);
 }
