@@ -1,5 +1,4 @@
 #include "Core/game.hpp"
-#include <algorithm>
 
 float worldWidth = 3000.f;
 float worldHeight = 2000.f;
@@ -34,8 +33,6 @@ void	Game::run(void)
 		float dt = clock.restart().asSeconds();
 		player.handleInput(window);	
 		player.update(dt, walls);
-		spawnEnemy(1000, 600);
-		spawnEnemy(200, 600);
 		handleEvent();
 		update(dt);
 		render();
@@ -58,7 +55,7 @@ void	Game::update(float dt)
 	auto meleeHitbox = player.getMeleeHitbox();
 	if (meleeHitbox.has_value())
 	{
-		for (Enemy & e: enemies)
+		for (Enemy & e: world.getEnemies())
 		{
 			sf::FloatRect hitbox = meleeHitbox.value();
 			sf::FloatRect enemyBox = e.getBounds();
@@ -74,11 +71,6 @@ void	Game::update(float dt)
 			}
 		}
 	}
-	enemies.erase(
-		std::remove_if(enemies.begin(), enemies.end(),
-			[](const Enemy& e) { return e.readyToRemove(); }),
-		enemies.end()
-		);
 //camera update
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2f halfSize = viewSize / 2.f;
@@ -96,23 +88,12 @@ void	Game::update(float dt)
 	window.setView(camera);
 }
 
-void	Game::spawnEnemy(float x, float y)
-{
-	Enemy newEnemy;
-	newEnemy.setPosition({x, y});
-	enemies.push_back(newEnemy);
-}
-
 void	Game::render(void)
 {
 	window.clear(sf::Color::Black);
-	for (auto&wall : walls) window.draw(wall);
-	{
+	for (auto&wall : walls)
+	       	window.draw(wall);
 	player.draw(window);
-	for (Enemy & e: enemies)
-	{
-		e.draw(window);
-	}
+	world.render(window);
 	window.display();
-	}
 }
