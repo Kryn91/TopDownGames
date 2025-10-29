@@ -11,6 +11,8 @@ Game::Game()
 
 		player.setPosition({960.f,540.f});
 
+		world.setPlayer(player);
+
 		sf::RectangleShape wall1({400.f, 40.f});
 		wall1.setPosition({760.f, 1000.f});
 		wall1.setFillColor(sf::Color::Blue);
@@ -35,6 +37,7 @@ void	Game::run(void)
 		player.update(dt, walls);
 		handleEvent();
 		update(dt);
+		world.update(dt);
 		render();
 	}
 }
@@ -46,31 +49,10 @@ void	Game::handleEvent(void)
 			if(event->is<sf::Event::Closed>())
 			window.close();
 		}
-
 }
 
 void	Game::update(float dt)
 {
-//melee Colision
-	auto meleeHitbox = player.getMeleeHitbox();
-	if (meleeHitbox.has_value())
-	{
-		for (Enemy & e: world.getEnemies())
-		{
-			sf::FloatRect hitbox = meleeHitbox.value();
-			sf::FloatRect enemyBox = e.getBounds();
-			bool isColliding =
-			hitbox.position.x < enemyBox.position.x + enemyBox.size.x &&
-			hitbox.position.x + hitbox.size.x > enemyBox.position.x &&
-			hitbox.position.y < enemyBox.position.y + enemyBox.position.y &&
-			hitbox.position.y + hitbox.size.y > enemyBox.position.y;
-			if (e.isAlive() && isColliding && !player.getHasHitEnemy())
-			{
-				e.takeDamage(20);
-				player.setHasHitEnemy(true);
-			}
-		}
-	}
 //camera update
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2f halfSize = viewSize / 2.f;

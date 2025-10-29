@@ -25,11 +25,13 @@ public:
     void draw(sf::RenderTarget& target) const;
 
 private:
+
+    HealthComponent health;
+    sf::Vector2f attackDir{1.f, 0.f};
+    sf::RectangleShape body;
+
     void attack(const sf::Vector2f& targetPos);
     void setRotation(float angle);
-    HealthComponent health;
-private:
-    sf::RectangleShape body;
     float speed = 250.f;
     float attackCooldown = 0.8f;
     float attackDuration = 0.25f;
@@ -37,5 +39,5 @@ private:
     float attackActiveTimer = 0.f;
     float meleeRange = 70.f;
     bool hasHitEnemy = false;
-    sf::Vector2f attackDir{1.f, 0.f};
+
 };
