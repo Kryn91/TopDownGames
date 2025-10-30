@@ -52,7 +52,8 @@ void	World::update(float dt)
 		checkPlayerAttack(attackBox.value());
 	else
 		player->setHasHitEnemy(false);
-//update popups
+	for (auto& DamagePopup :damagePopups)
+		DamagePopup.update(dt);
 	enemies.erase(
 		std::remove_if(enemies.begin(), enemies.end(),
 			[](const Enemy& e) { return e.readyToRemove();}),

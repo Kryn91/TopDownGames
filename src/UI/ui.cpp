@@ -3,7 +3,7 @@
 DamagePopup::DamagePopup(const sf::Font& font, const std::string& str, sf::Vector2f position)
 	: text (font, str, 24)
 {
-	text.setFillColor(sf::Color::Red);
+	text.setFillColor(sf::Color::White);
 	text.setPosition(position);
 	text.setOutlineColor(sf::Color::Black);
 	text.setOutlineThickness(2);

@@ -6,7 +6,7 @@ class DamagePopup
 private:
 	sf::Text text;
 	sf::Vector2f velocity;
-	float lifeTime = 1.f;
+	float lifeTime = 0.7f;
 
 public:
 	DamagePopup(const sf::Font& font, const std::string& str, sf::Vector2f position);
