@@ -18,6 +18,11 @@ void	Enemy::setPosition(sf::Vector2f pos)
 	body.setPosition(pos);
 }
 
+sf::Vector2f	Enemy::getPosition()const
+{
+	return	(body.getPosition());
+}
+
 sf::FloatRect	Enemy::getBounds()const
 {
 	return (body.getGlobalBounds());

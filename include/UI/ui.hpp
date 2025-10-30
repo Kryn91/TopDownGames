@@ -12,6 +12,6 @@ public:
 	DamagePopup(const sf::Font& font, const std::string& str, sf::Vector2f position);
 
 	void	update(float dt);
-	void	render(sf::RenderWindow& window);
+	void	draw(sf::RenderWindow& window);
 	bool	isAlive() const;
 };

@@ -4,6 +4,8 @@
 
 World::World()
 {
+	if (!font.openFromFile("Assets/Fonts/SpecialGothic-Bold.ttf"))
+		std::cerr << "erreur impossible de charger la police.\n";
 	spawnEnemiesInitial();
 }
 void	World::spawnEnemiesInitial()
@@ -18,11 +20,10 @@ void	World::spawnEnemiesInitial()
 }
 void	World::checkPlayerAttack(const sf::FloatRect& attackBox)
 {
-//melee Colision
 	auto meleeHitbox = player->getMeleeHitbox();
 	if (meleeHitbox.has_value())
 	{
-		for (Enemy & e: getEnemies())
+		for (Enemy &e: getEnemies())
 		{
 			sf::FloatRect hitbox = meleeHitbox.value();
 			sf::FloatRect enemyBox = e.getBounds();
@@ -34,6 +35,7 @@ void	World::checkPlayerAttack(const sf::FloatRect& attackBox)
 			if (e.isAlive() && isColliding && !player->getHasHitEnemy())
 			{
 				e.takeDamage(20);
+				damagePopups.emplace_back(font, "20", e.getPosition());
 				player->setHasHitEnemy(true);
 			}
 		}
@@ -50,6 +52,7 @@ void	World::update(float dt)
 		checkPlayerAttack(attackBox.value());
 	else
 		player->setHasHitEnemy(false);
+//update popups
 	enemies.erase(
 		std::remove_if(enemies.begin(), enemies.end(),
 			[](const Enemy& e) { return e.readyToRemove();}),
@@ -69,7 +72,8 @@ void	World::render(sf::RenderWindow &window)
 		if(e.isAlive())
 			e.draw(window);
 	}
-	//draw popup
+	for (auto &DamagePopup : damagePopups)
+		DamagePopup.draw(window);
 }
 
 std::vector<Enemy>&	World::getEnemies(void)

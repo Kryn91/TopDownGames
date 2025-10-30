@@ -20,6 +20,6 @@ public:
 private:
 	std::vector<Enemy> enemies;
 	std::vector<DamagePopup> damagePopups;
-//	const sf::Font& font;
+	sf::Font font;
 	void spawnEnemiesInitial();
 };

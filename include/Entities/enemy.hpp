@@ -7,14 +7,15 @@ class Enemy
 private:
 	sf::RectangleShape body;
 	//int hp;
-	HealthComponent health;
+	HealthComponent	health;
 public:
 	Enemy();
 
-	void setPosition(const sf::Vector2f pos);
-	sf::FloatRect getBounds()const;
-	void draw(sf::RenderTarget& target)const;
-	void takeDamage(int amount);
-	bool isAlive()const;
-	bool readyToRemove()const;
+	void	setPosition(const sf::Vector2f pos);
+	sf::Vector2f	getPosition()const;
+	sf::FloatRect	getBounds()const;
+	void	draw(sf::RenderTarget& target)const;
+	void	takeDamage(int amount);
+	bool	isAlive()const;
+	bool	readyToRemove()const;
 };

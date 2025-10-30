@@ -24,7 +24,7 @@ void	DamagePopup::update(float dt)
 	text.setFillColor(color);
 }
 
-void	DamagePopup::render(sf::RenderWindow& window)
+void	DamagePopup::draw(sf::RenderWindow& window)
 {
 		window.draw(text);
 }
