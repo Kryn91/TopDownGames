@@ -1,31 +1,32 @@
 #include "Entities/enemy.hpp"
 #include <iostream>
 
-Enemy::Enemy() : health(100)
+Enemy::Enemy(const sf::Texture& tex)
+       	:sprite(tex),  health(100)
 {
-	body.setSize({50.f,50.f});
-	body.setOrigin({25.f, 25.f});
-	body.setFillColor(sf::Color::Red);
+	sprite.setTexture(tex);
+	sprite.setOrigin({25.f, 25.f});
+	sprite.setScale({100.f /tex.getSize().x, 100.f /tex.getSize().y});
 }
 
 void	Enemy::draw(sf::RenderTarget& target)const
 {
-	target.draw(body);
+	target.draw(sprite);
 }
 
 void	Enemy::setPosition(sf::Vector2f pos)
 {
-	body.setPosition(pos);
+	sprite.setPosition(pos);
 }
 
 sf::Vector2f	Enemy::getPosition()const
 {
-	return	(body.getPosition());
+	return	(sprite.getPosition());
 }
 
 sf::FloatRect	Enemy::getBounds()const
 {
-	return (body.getGlobalBounds());
+	return (sprite.getGlobalBounds());
 }
 
 void	Enemy::takeDamage(int amount)

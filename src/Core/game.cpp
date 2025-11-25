@@ -1,4 +1,5 @@
 #include "Core/game.hpp"
+#include <iostream>
 
 float worldWidth = 3000.f;
 float worldHeight = 2000.f;
@@ -26,6 +27,13 @@ Game::Game()
 		camera.setSize(sf::Vector2f(static_cast<float>(window.getSize().x),
 				       	static_cast<float>(window.getSize().y)));
 		camera.setCenter(player.getPosition());
+		
+		TextureManager& texMgr = TextureManager::get();
+
+		if(!texMgr.loadTexture("enemy", "Assets/Entities/diable.png"))
+			std::cerr << "Erreur :impossible de charger la texture enemy \n";
+
+		world.init();
 	}
 
 void	Game::run(void)

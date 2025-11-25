@@ -13,11 +13,12 @@ public:
 	void run(void);
 	void	update(float dt);
 	void	render(void);
+
+	World world;
 private:
 	sf::RenderWindow window;
 	sf::Clock clock;
 	sf::View camera;
-	World world;
 
 	Player player;
 	std::vector<sf::RectangleShape> walls;

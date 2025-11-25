@@ -6,13 +6,19 @@ World::World()
 {
 	if (!font.openFromFile("Assets/Fonts/SpecialGothic-Bold.ttf"))
 		std::cerr << "erreur impossible de charger la police.\n";
-	spawnEnemiesInitial();
 }
-void	World::spawnEnemiesInitial()
+
+void	World::init()
 {
-	enemies.push_back(Enemy());
-	enemies.push_back(Enemy());
-	enemies.push_back(Enemy());
+	const sf::Texture& enemyTex = TextureManager::get().getTexture("enemy");
+	spawnEnemiesInitial(enemyTex);
+}
+
+void	World::spawnEnemiesInitial(const sf::Texture& enemyTex)
+{
+	enemies.emplace_back(enemyTex);
+	enemies.emplace_back(enemyTex);
+	enemies.emplace_back(enemyTex);
 
 	enemies[0].setPosition({1000.f, 800.f});
 	enemies[1].setPosition({1200.f, 600.f});
